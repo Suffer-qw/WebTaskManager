@@ -10,8 +10,12 @@ namespace WebTaskManager.Extensions
     {
         public static void AddApplicationServies(this IHostApplicationBuilder builder1)
         {
-            builder1.Services.AddDbContext<ApplicationContext>();
-
+            builder1.Services.AddDbContext<ApplicationContext>(options =>
+            {
+                var folderPath = builder1.Configuration["DatabaseSettings:FolderPath"];
+                var dbPath = Path.Combine(folderPath, "TestTaskss.db");
+                options.UseSqlite($"Data Source={dbPath}");
+            });
             builder1.Services.AddScoped<IMyTaskService, MyTaskServices>();
 
             //Add Global Exception handling
