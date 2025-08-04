@@ -1,10 +1,20 @@
 
 using WebTaskManager.Endpoints;
+using WebTaskManager.Exceptions;
 using WebTaskManager.Extensions;
+using WebTaskManager.Interface;
+using WebTaskManager.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddApplicationServies();
+builder.Services.AddScoped<IMyTaskService, MyTaskServices>();
+
+//Add Global Exception handling
+
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+builder.Services.AddProblemDetails();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

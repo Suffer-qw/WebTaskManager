@@ -15,7 +15,7 @@ namespace WebTaskManager.Exceptions
        
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            _logger.LogError(exception, "An error occued while processing your request");
+            _logger.LogError(exception, "An error occued while processing your request Тест");
 
             var response = new ErrorResponse
             {
