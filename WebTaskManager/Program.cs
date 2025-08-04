@@ -1,4 +1,5 @@
 
+using WebTaskManager.AppContext;
 using WebTaskManager.Endpoints;
 using WebTaskManager.Extensions;
 
@@ -29,3 +30,4 @@ app.MapGroup("api/v1/")
     .MapMyTaskEndPoint();
 
 app.Run();
+

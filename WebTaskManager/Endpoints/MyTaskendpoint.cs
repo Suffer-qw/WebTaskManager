@@ -1,5 +1,8 @@
-﻿using WebTaskManager.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using WebTaskManager.AppContext;
+using WebTaskManager.Contracts;
 using WebTaskManager.Interface;
+using WebTaskManager.Model;
 
 namespace WebTaskManager.Endpoints
 {

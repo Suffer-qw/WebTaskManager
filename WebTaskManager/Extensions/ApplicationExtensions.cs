@@ -10,10 +10,7 @@ namespace WebTaskManager.Extensions
     {
         public static void AddApplicationServies(this IHostApplicationBuilder builder1)
         {
-            builder1.Services.AddDbContext<ApplicationContext>(options =>
-            {
-                options.UseSqlite(builder1.Configuration.GetConnectionString("SqlConnection"));
-            });
+            builder1.Services.AddDbContext<ApplicationContext>();
 
             builder1.Services.AddScoped<IMyTaskService, MyTaskServices>();
 
