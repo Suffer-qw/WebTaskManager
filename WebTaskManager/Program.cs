@@ -34,8 +34,12 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
 
-app.MapGroup("api/v1/")
+app.MapGroup("api/v1/mytask")
     .WithTags("mytask endpoint")
     .MapMyTaskEndPoint();
+app.MapGroup("api/v1/UserProfile")
+    .WithTags("UserProfile endpoint")
+    .MapUserProfileEndPoint();
+
 
 app.Run();

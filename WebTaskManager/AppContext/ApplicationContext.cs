@@ -36,7 +36,7 @@ namespace WebTaskManager.AppContext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasDefaultSchema(DefaultSchema);// Установка схемы
+            //modelBuilder.HasDefaultSchema(DefaultSchema);// Установка схемы
             base.OnModelCreating(modelBuilder);// Важно вызывать базовый метод
 
             // Автоматическое применение всех конфигураций

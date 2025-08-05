@@ -13,6 +13,7 @@ namespace WebTaskManager.Extensions
             builder1.Services.AddDbContext<ApplicationContext>();
 
             builder1.Services.AddScoped<IMyTaskService, MyTaskServices>();
+            builder1.Services.AddScoped<IUserProfileService, UserProfileServices>();
 
             //Add Global Exception handling
 
