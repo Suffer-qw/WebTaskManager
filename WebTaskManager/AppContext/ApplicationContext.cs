@@ -27,6 +27,7 @@ namespace WebTaskManager.AppContext
         }
 
         public DbSet<MyTaskModel> MyTasks => Set<MyTaskModel>();
+        public DbSet<UserProfileModel> UserProfile => Set<UserProfileModel>();
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Формируем полный путь к файлу БД
