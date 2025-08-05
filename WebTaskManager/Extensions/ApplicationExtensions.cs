@@ -14,6 +14,7 @@ namespace WebTaskManager.Extensions
 
             builder1.Services.AddScoped<IMyTaskService, MyTaskServices>();
             builder1.Services.AddScoped<IUserProfileService, UserProfileServices>();
+            builder1.Services.AddScoped<ITaskStatusService, TaskStatusServices>();
 
             //Add Global Exception handling
 

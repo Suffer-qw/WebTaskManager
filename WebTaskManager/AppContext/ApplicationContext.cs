@@ -28,6 +28,7 @@ namespace WebTaskManager.AppContext
 
         public DbSet<MyTaskModel> MyTasks => Set<MyTaskModel>();
         public DbSet<UserProfileModel> UserProfile => Set<UserProfileModel>();
+        public DbSet<TaskStatusModel> TaskStatus => Set<TaskStatusModel>();
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // Формируем полный путь к файлу БД
@@ -38,6 +39,11 @@ namespace WebTaskManager.AppContext
         {
             //modelBuilder.HasDefaultSchema(DefaultSchema);// Установка схемы
             base.OnModelCreating(modelBuilder);// Важно вызывать базовый метод
+            modelBuilder.Entity<TaskStatusModel>().HasData(
+                new TaskStatusModel { Id = Guid.NewGuid(), Status = "Новая" },
+                new TaskStatusModel { Id = Guid.NewGuid(), Status = "В работе" },
+                new TaskStatusModel { Id = Guid.NewGuid(), Status = "Завершена" }
+                );
 
             // Автоматическое применение всех конфигураций
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);

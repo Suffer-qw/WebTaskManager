@@ -11,6 +11,9 @@
 
         public string Type { get; set; }
 
-        public string Status { get; set; }
+        public Guid TaskStatusId { get; set; }
+
+        //Нужно для быстрого поиска Status.name не делая дополнительный запрос 
+        public TaskStatusModel TaskStatus { get; set; } 
     }
 }
