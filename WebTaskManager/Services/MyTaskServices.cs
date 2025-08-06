@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using WebTaskManager.AppContext;
 using WebTaskManager.Contracts;
 using WebTaskManager.Interface;
+using WebTaskManager.Model;
 namespace WebTaskManager.Services
 {
 
@@ -34,59 +35,59 @@ public class MyTaskServices : IMyTaskService
     //Асинхронные операции
     public MyTaskServices(ApplicationContext context, ILogger<MyTaskServices> logger)
     {
-        _context = context;
-        _logger = logger;
+        _context = context;//доступ к базе данных что бы читать и созранять
+        _logger = logger;//журнал ошибок 
     }
     //Внедрение зависимостей (DB Context и Logger)
-
-    //Добовление задачи в бд
-    public async Task<MyTaskResponse> AddMyTaskAsync(CreateMyTaskRequest request)
-    {
-        try
+        public async Task<MyTaskResponse> AddMyTaskAsync(CreateMyTaskRequest request)
         {
-            // 1. Создание нового объекта задачи
-            var mytask = new Model.MyTaskModel
+            try
             {
-                // 2. Генерация уникального идентификатора
-                Id = Guid.NewGuid(),
-                // 3. Заполнение данных из запроса пользователя
-                Name = request.Name,
-                Description = request.Description,
-                Type = request.Type,
-                Status = request.Status
-            };
-            // 4. Добавление задачи в контекст БД
-            _context.MyTasks.Add(mytask);
-            // 5. Асинхронное сохранение изменений в БД
-            await _context.SaveChangesAsync();
-            // 6. Логирование успешного создания
-            _logger.LogInformation($"task with id{mytask.Id} added database");
-            // 7. Формирование ответа для пользователя
-            return new MyTaskResponse
+                // Найди статус по имени
+                var status = await _context.TaskStatus
+                    .FirstOrDefaultAsync(s => s.Status == request.Status);
+                if (status == null)
+                {
+                    _logger.LogWarning($"Статус '{request.Status}' не найден");
+                    return null;
+                }
+
+                var mytask = new MyTaskModel
+                {
+                    Id = Guid.NewGuid(),
+                    Name = request.Name,
+                    Description = request.Description,
+                    Type = request.Type,
+                    TaskStatusId = status.Id  // записываем Id связанного статуса
+                };
+
+                _context.MyTasks.Add(mytask);
+                await _context.SaveChangesAsync();
+
+                return new MyTaskResponse
+                {
+                    Id = mytask.Id,
+                    Name = mytask.Name,
+                    Description = mytask.Description,
+                    Type = mytask.Type,
+                    Status = mytask.TaskStatus.Status // возвращаем имя статуса пользователю
+                };
+            }
+            catch (Exception ex)
             {
-                Id = mytask.Id,
-                Name = mytask.Name,
-                Description = mytask.Description,
-                Type = mytask.Type,
-                Status = mytask.Status
-            };
+                _logger.LogError(ex, ex.Message);
+                return null;
+            }
         }
-        catch (Exception ex)
-        {
-            // 8. Обработка ошибок
-            _logger.LogError(ex, ex.Message);
-            // 9. Возврат null при ошибке
-            return null;
-        }
-    }
 
 
-    //получение списка всех задач
+        //получение списка всех задач
     public async Task<List<MyTaskResponse>> GetAllMyTaskAsync()
     {
+
         try
         {
-            var mytasks = await _context.MyTasks.ToListAsync();
+            var mytasks = await _context.MyTasks.Include(x => x.TaskStatus).ToListAsync();
 
             return mytasks.Select(mytask => new MyTaskResponse
             {
@@ -94,7 +95,7 @@ public class MyTaskServices : IMyTaskService
                 Name = mytask.Name,
                 Description = mytask.Description,
                 Type = mytask.Type,
-                Status = mytask.Status
+                Status = mytask.TaskStatus.Status,
             }).ToList();
         }
         catch (Exception ex)
@@ -110,7 +111,7 @@ public class MyTaskServices : IMyTaskService
     {
         try
         {
-            var mytask = await _context.MyTasks.FindAsync(MyTaskId);
+            var mytask = await _context.MyTasks.Include(t => t.TaskStatus).FirstOrDefaultAsync(x => x.Id == MyTaskId);
             if(mytask == null)
             {
                 // _logger.LogInformation($"");
@@ -122,7 +123,7 @@ public class MyTaskServices : IMyTaskService
                 Name = mytask.Name,
                 Description = mytask.Description,
                 Type = mytask.Type,
-                Status = mytask.Status
+                Status = mytask.TaskStatus.Status,
             };
         }
         catch (Exception ex)
@@ -138,7 +139,9 @@ public class MyTaskServices : IMyTaskService
     {
         try
         {
-            var existingTask = await _context.MyTasks.FindAsync(MyTaskId);
+            var existingTask = await _context.MyTasks
+                    .Include(t => t.TaskStatus)
+                    .FirstOrDefaultAsync(x => x.Id == MyTaskId);
             if (existingTask == null)
             {
                 // _logger.LogInformation($"");
@@ -147,7 +150,7 @@ public class MyTaskServices : IMyTaskService
             existingTask.Name = updateRequest.Name;
             existingTask.Description = updateRequest.Description;
             existingTask.Type = updateRequest.Type;
-            existingTask.Status = updateRequest.Status;
+            existingTask.TaskStatus.Status = updateRequest.Status;
 
             await _context.SaveChangesAsync();
             return new MyTaskResponse
@@ -156,7 +159,7 @@ public class MyTaskServices : IMyTaskService
                 Name = existingTask.Name,
                 Description = existingTask.Description,
                 Type = existingTask.Type,
-                Status = existingTask.Status
+                Status = existingTask.TaskStatus.Status
             };
         }
         catch (Exception ex)
