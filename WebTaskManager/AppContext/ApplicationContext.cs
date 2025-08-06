@@ -37,8 +37,9 @@ namespace WebTaskManager.AppContext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.HasDefaultSchema(DefaultSchema);// Установка схемы
-            base.OnModelCreating(modelBuilder);// Важно вызывать базовый метод
+            //modelBuilder.HasDefaultSchema(DefaultSchema);// Установка схемы, не работает с Sqlite
+            base.OnModelCreating(modelBuilder);// Важно вызывать базовый метод, что бы Ef не потеряла системную конфигурацию
+            //заранее добовляем несколько статусов 
             modelBuilder.Entity<TaskStatusModel>().HasData(
                 new TaskStatusModel { Id = Guid.NewGuid(), Status = "Новая" },
                 new TaskStatusModel { Id = Guid.NewGuid(), Status = "В работе" },

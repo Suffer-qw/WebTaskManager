@@ -1,4 +1,5 @@
-﻿using WebTaskManager.Contracts;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using WebTaskManager.Contracts;
 using WebTaskManager.Interface;
 
 namespace WebTaskManager.Endpoints
@@ -11,6 +12,8 @@ namespace WebTaskManager.Endpoints
             app.MapPost("/myTasksCreate", async (CreateMyTaskRequest CreateMyTask, IMyTaskService myTaskService) =>
             {
                 var result = await myTaskService.AddMyTaskAsync(CreateMyTask);
+                if (result == null)
+                    return Results.BadRequest("Статуса задачи не найден");
                 return Results.Created($"/mytask/{result.Id}", result);
             });
 

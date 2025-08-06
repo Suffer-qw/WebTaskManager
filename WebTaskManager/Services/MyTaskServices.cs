@@ -35,53 +35,10 @@ public class MyTaskServices : IMyTaskService
     //Асинхронные операции
     public MyTaskServices(ApplicationContext context, ILogger<MyTaskServices> logger)
     {
-        _context = context;
-        _logger = logger;
+        _context = context;//доступ к базе данных что бы читать и созранять
+        _logger = logger;//журнал ошибок 
     }
     //Внедрение зависимостей (DB Context и Logger)
-
-    //Добовление задачи в бд (старое)
-    /*
-    public async Task<MyTaskResponse> AddMyTaskAsync(CreateMyTaskRequest request)
-    {
-        try
-        {
-            // 1. Создание нового объекта задачи
-            var mytask = new Model.MyTaskModel
-            {
-                // 2. Генерация уникального идентификатора
-                Id = Guid.NewGuid(),
-                // 3. Заполнение данных из запроса пользователя
-                Name = request.Name,
-                Description = request.Description,
-                Type = request.Type,
-                Status = request.Status
-            };
-            // 4. Добавление задачи в контекст БД
-            _context.MyTasks.Add(mytask);
-            // 5. Асинхронное сохранение изменений в БД
-            await _context.SaveChangesAsync();
-            // 6. Логирование успешного создания
-            _logger.LogInformation($"task with id{mytask.Id} added database");
-            // 7. Формирование ответа для пользователя
-            return new MyTaskResponse
-            {
-                Id = mytask.Id,
-                Name = mytask.Name,
-                Description = mytask.Description,
-                Type = mytask.Type,
-                Status = mytask.Status
-            };
-        }
-        catch (Exception ex)
-        {
-            // 8. Обработка ошибок
-            _logger.LogError(ex, ex.Message);
-            // 9. Возврат null при ошибке
-            return null;
-        }
-    }
-    */
         public async Task<MyTaskResponse> AddMyTaskAsync(CreateMyTaskRequest request)
         {
             try
@@ -89,7 +46,6 @@ public class MyTaskServices : IMyTaskService
                 // Найди статус по имени
                 var status = await _context.TaskStatus
                     .FirstOrDefaultAsync(s => s.Status == request.Status);
-
                 if (status == null)
                 {
                     _logger.LogWarning($"Статус '{request.Status}' не найден");
@@ -102,7 +58,7 @@ public class MyTaskServices : IMyTaskService
                     Name = request.Name,
                     Description = request.Description,
                     Type = request.Type,
-                    TaskStatusId = status.Id  // 👈 записываем Id связанного статуса
+                    TaskStatusId = status.Id  // записываем Id связанного статуса
                 };
 
                 _context.MyTasks.Add(mytask);
@@ -114,7 +70,7 @@ public class MyTaskServices : IMyTaskService
                     Name = mytask.Name,
                     Description = mytask.Description,
                     Type = mytask.Type,
-                    Status = status.Status // 👈 возвращаем имя статуса пользователю
+                    Status = mytask.TaskStatus.Status // возвращаем имя статуса пользователю
                 };
             }
             catch (Exception ex)

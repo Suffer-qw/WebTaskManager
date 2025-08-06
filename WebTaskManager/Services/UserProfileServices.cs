@@ -71,7 +71,7 @@ namespace WebTaskManager.Services
                 var user = await _context.UserProfile.FindAsync(UserProfileId);
                 if (user == null)
                 {
-                    // _logger.LogInformation($"");
+                    _logger.LogInformation($"User Profile dont find");
                     return null;
                 }
                 return new UserProfileResponse
@@ -95,7 +95,7 @@ namespace WebTaskManager.Services
                 var existingUser = await _context.UserProfile.FindAsync(UserProfileId);
                 if (existingUser == null)
                 {
-                    // _logger.LogInformation($"");
+                    _logger.LogInformation($"User Profile dont find");
                     return null;
                 }
                 existingUser.Name = updateRequest.Name;
@@ -120,14 +120,14 @@ namespace WebTaskManager.Services
             var user = _context.UserProfile.Find(UserProfileId);
             if(user == null)
             {
-                // _logger.LogInformation($"");
+                _logger.LogInformation($"User Profile dont find");
                 return Task.FromResult(false);
             }
             try
             {
                 _context.UserProfile.Remove(user);
                 _context.SaveChanges();
-                // _logger.LogInformation($"");
+                _logger.LogInformation($"User Profile Remove");
                 return Task.FromResult(true);
             }
             catch (Exception ex)

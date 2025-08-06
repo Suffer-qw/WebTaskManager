@@ -8,7 +8,6 @@ using WebTaskManager.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddApplicationServies();
-builder.Services.AddScoped<IMyTaskService, MyTaskServices>();
 
 //Add Global Exception handling
 

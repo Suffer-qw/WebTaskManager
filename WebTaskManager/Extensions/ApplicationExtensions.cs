@@ -12,6 +12,7 @@ namespace WebTaskManager.Extensions
         {
             builder1.Services.AddDbContext<ApplicationContext>();
 
+            //Scoped-Сервисы , регистрация сервисов приложения которые отвечают за бизнес логику в виде (интерфейс, реализация) 
             builder1.Services.AddScoped<IMyTaskService, MyTaskServices>();
             builder1.Services.AddScoped<IUserProfileService, UserProfileServices>();
             builder1.Services.AddScoped<ITaskStatusService, TaskStatusServices>();
