@@ -14,7 +14,6 @@ namespace WebTaskManager.AppContext
         
 
         public string DefaultSchema => "MyTaskapi";
-        //Схема по умолчанию: HasDefaultSchema("MyTaskapi") задаёт префикс для всех таблиц
         public ApplicationContext()
         {
             var projectRoot = Path.GetFullPath(Path.Combine(System.AppContext.BaseDirectory, "..", "..", ".."));
@@ -41,7 +40,6 @@ namespace WebTaskManager.AppContext
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.HasDefaultSchema(DefaultSchema);// Установка схемы, не работает с Sqlite
             base.OnModelCreating(modelBuilder);// Важно вызывать базовый метод, что бы Ef не потеряла системную конфигурацию
             //заранее добовляем несколько статусов 
             modelBuilder.Entity<TaskStatusModel>().HasData(

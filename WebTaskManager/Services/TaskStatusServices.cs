@@ -68,7 +68,7 @@ namespace WebTaskManager.Services
                 var status = await _context.TaskStatus.FindAsync(StatusId);
                 if (status == null)
                 {
-                    // _logger.LogInformation($"");
+                    _logger.LogInformation($"status dont find by id");
                     return null;
                 }
                 return new TaskStatusResponse
