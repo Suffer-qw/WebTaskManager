@@ -39,7 +39,7 @@ public class MyTaskServices : IMyTaskService
         _logger = logger;//журнал ошибок 
     }
     //Внедрение зависимостей (DB Context и Logger)
-        public async Task<MyTaskResponse> AddMyTaskAsync(CreateMyTaskRequest request)
+        public async Task<MyTaskResponse?> AddMyTaskAsync(CreateMyTaskRequest request)
         {
             try
             {
@@ -58,7 +58,8 @@ public class MyTaskServices : IMyTaskService
                     Name = request.Name,
                     Description = request.Description,
                     Type = request.Type,
-                    TaskStatusId = status.Id  // записываем Id связанного статуса
+                    TaskStatusId = status.Id, // записываем Id связанного статуса
+                    TaskStatus = status
                 };
 
                 _context.MyTasks.Add(mytask);
@@ -82,7 +83,7 @@ public class MyTaskServices : IMyTaskService
 
 
         //получение списка всех задач
-    public async Task<List<MyTaskResponse>> GetAllMyTaskAsync()
+    public async Task<List<MyTaskResponse>?> GetAllMyTaskAsync()
     {
 
         try
@@ -107,14 +108,14 @@ public class MyTaskServices : IMyTaskService
 
 
     //получение задачи по ID
-    public async Task<MyTaskResponse> GetMyTaskByIdAsync(Guid MyTaskId)
+    public async Task<MyTaskResponse?> GetMyTaskByIdAsync(Guid MyTaskId)
     {
         try
         {
             var mytask = await _context.MyTasks.Include(t => t.TaskStatus).FirstOrDefaultAsync(x => x.Id == MyTaskId);
             if(mytask == null)
             {
-                // _logger.LogInformation($"");
+                _logger.LogInformation($"the task id was not found");
                 return null;
             }
             return new MyTaskResponse
@@ -135,7 +136,7 @@ public class MyTaskServices : IMyTaskService
 
 
     //обновление задачи 
-    public async Task<MyTaskResponse> UpdateMyTaskAsync(Guid MyTaskId, UpdateMyTaskRequest updateRequest)
+    public async Task<MyTaskResponse?> UpdateMyTaskAsync(Guid MyTaskId, UpdateMyTaskRequest updateRequest)
     {
         try
         {
@@ -144,7 +145,7 @@ public class MyTaskServices : IMyTaskService
                     .FirstOrDefaultAsync(x => x.Id == MyTaskId);
             if (existingTask == null)
             {
-                // _logger.LogInformation($"");
+                _logger.LogInformation($"the task id was not found");
                 return null;
             }
             existingTask.Name = updateRequest.Name;
@@ -175,14 +176,14 @@ public class MyTaskServices : IMyTaskService
         var mytask = _context.MyTasks.Find(MyTaskId);
         if(mytask == null)
         {
-            // _logger.LogInformation($"");
+            _logger.LogInformation($"the task id was not found");
             return Task.FromResult(false);
         }
         try
         {
             _context.MyTasks.Remove(mytask);
             _context.SaveChanges();
-            // _logger.LogInformation($"");
+            _logger.LogInformation($"the task has been deleted");
             return Task.FromResult(true);
         }
         catch (Exception ex)

@@ -3,6 +3,6 @@
     public class TaskStatusResponse
     {
         public Guid Id { get; set; }
-        public string Status { get; set; }
+        public required string Status { get; set; }
     }
 }

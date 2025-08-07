@@ -17,7 +17,7 @@ namespace WebTaskManager.Services
             _logger = logger;
         }
 
-        public async Task<UserProfileResponse> AddUserProfileAsync(CreateUserProfileRequest request)
+        public async Task<UserProfileResponse?> AddUserProfileAsync(CreateUserProfileRequest request)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace WebTaskManager.Services
             }
         }
 
-        public async Task<List<UserProfileResponse>> GetAllUserProfileAsync()
+        public async Task<List<UserProfileResponse>?> GetAllUserProfileAsync()
         {
             try
             {
@@ -64,7 +64,7 @@ namespace WebTaskManager.Services
         }
         
 
-        public async Task<UserProfileResponse> GetUserProfileByIdAsync(Guid UserProfileId)
+        public async Task<UserProfileResponse?> GetUserProfileByIdAsync(Guid UserProfileId)
         {
             try
             {
@@ -88,7 +88,7 @@ namespace WebTaskManager.Services
             }
         }
 
-        public async Task<UserProfileResponse> UpdateUserProfileAsync(Guid UserProfileId, UpdateUserProfileRequest updateRequest)
+        public async Task<UserProfileResponse?> UpdateUserProfileAsync(Guid UserProfileId, UpdateUserProfileRequest updateRequest)
         {
             try
             {

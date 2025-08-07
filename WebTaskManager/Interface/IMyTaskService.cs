@@ -13,11 +13,10 @@ namespace WebTaskManager.Interface
         //Позволяет обрабатывать больше запросов одновременно
         //Особенно важно для операций ввода-вывода(БД, файлы, сетевые запросы)
 
-        Task<MyTaskResponse> AddMyTaskAsync(CreateMyTaskRequest request);
-        Task<MyTaskResponse> GetMyTaskByIdAsync(Guid MyTaskId);
-        Task<List<MyTaskResponse>> GetAllMyTaskAsync();
-        Task<MyTaskResponse> UpdateMyTaskAsync(Guid MyTaskId, UpdateMyTaskRequest updateRequest);
-
+        Task<MyTaskResponse?> AddMyTaskAsync(CreateMyTaskRequest request);
+        Task<MyTaskResponse?> GetMyTaskByIdAsync(Guid MyTaskId);
+        Task<List<MyTaskResponse>?> GetAllMyTaskAsync();
+        Task<MyTaskResponse?> UpdateMyTaskAsync(Guid MyTaskId, UpdateMyTaskRequest updateRequest);
         Task<bool> DeleteMyTaskAsync(Guid MyTaskId);
 
     }

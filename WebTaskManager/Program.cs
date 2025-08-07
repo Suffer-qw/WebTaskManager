@@ -1,6 +1,4 @@
-
 using WebTaskManager.Endpoints;
-using WebTaskManager.Exceptions;
 using WebTaskManager.Extensions;
 using WebTaskManager.Interface;
 using WebTaskManager.Services;
@@ -9,9 +7,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddApplicationServies();
 
-//Add Global Exception handling
-
-builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
 builder.Services.AddProblemDetails();
 
