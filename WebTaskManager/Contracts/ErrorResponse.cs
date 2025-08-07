@@ -3,11 +3,11 @@
     public class ErrorResponse
     {
 
-        public string Title { get; set; }
+        public required string Title { get; set; }
 
-        public int StatusCode { get; set; }
+        public int StatusCode { get; set; } = 0;
 
-        public string Message { get; set; }
+        public required string Message { get; set; }
 
     }
 }

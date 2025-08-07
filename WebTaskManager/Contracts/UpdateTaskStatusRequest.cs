@@ -2,6 +2,6 @@
 {
     public class UpdateTaskStatusRequest
     {
-        public string Status { get; set; }
+        public required string Status { get; set; }
     }
 }

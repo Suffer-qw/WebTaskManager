@@ -17,7 +17,7 @@ namespace WebTaskManager.Services
             _logger = logger;
         }
 
-        public async Task<TaskStatusResponse> AddStatusAsync(CreateTaskStatusRequest request)
+        public async Task<TaskStatusResponse?> AddStatusAsync(CreateTaskStatusRequest request)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace WebTaskManager.Services
                 return null;
             }
         }
-        public async Task<List<TaskStatusResponse>> GetAllStatusAsync()
+        public async Task<List<TaskStatusResponse>?> GetAllStatusAsync()
         {
             try
             {
@@ -61,7 +61,7 @@ namespace WebTaskManager.Services
             }
         }
 
-        public async Task<TaskStatusResponse> GetStatusByIdAsync(Guid StatusId)
+        public async Task<TaskStatusResponse?> GetStatusByIdAsync(Guid StatusId)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace WebTaskManager.Services
             }
         }
 
-        public async Task<TaskStatusResponse> UpdateStatusAsync(Guid StatusId, UpdateTaskStatusRequest updateRequest)
+        public async Task<TaskStatusResponse?> UpdateStatusAsync(Guid StatusId, UpdateTaskStatusRequest updateRequest)
         {
             try
             {

@@ -2,6 +2,6 @@
 {
     public class CreateTaskStatusRequest
     {
-        public string Status { get; set; }
+        public required string Status { get; set; }
     }
 }
