@@ -10,11 +10,15 @@ namespace WebTaskManager.AppContext
         //DbContext (контекст базы данных) Entity Framework Core, который:
         //Определяет подключение к базе данных
         //Управляет сущностями MyTaskModel
-        private readonly string _dbFolderPath = @"C:\Users\GOLDNOVA\source\repos\WebTaskManager\WebTaskManager\DataBasetmpTask\";
+        private readonly string _dbFolderPath;
+        
+
         public string DefaultSchema => "MyTaskapi";
         //Схема по умолчанию: HasDefaultSchema("MyTaskapi") задаёт префикс для всех таблиц
         public ApplicationContext()
         {
+            var projectRoot = Path.GetFullPath(Path.Combine(System.AppContext.BaseDirectory, "..", "..", ".."));
+            _dbFolderPath = Path.Combine(projectRoot, "DataBasetmpTask\\");
             try
             {
                 Database.EnsureCreated();
