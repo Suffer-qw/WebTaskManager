@@ -15,5 +15,9 @@
 
         //Нужно для быстрого поиска Status.name не делая дополнительный запрос 
         public required TaskStatusModel TaskStatus { get; set; } 
+
+        public Guid UserId { get; set; }
+
+        public UserProfileModel User { get; set; }
     }
 }
