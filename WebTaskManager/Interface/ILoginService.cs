@@ -5,7 +5,7 @@ namespace WebTaskManager.Interface
 {
     public interface ILoginService
     {
-        Task<UserProfileModel?> AuthenticateAsync(CreateUserProfileRequest login);
-        Task<bool> RegisterAsync(CreateUserProfileRequest registerModel);
+        Task<UserProfileModel?> AuthenticateAsync(CreateUserProfileRequest login); // вход пользователя
+        Task<bool> RegisterAsync(CreateUserProfileRequest registerModel);// регистрация пользователя 
     }
 }

@@ -24,6 +24,7 @@ namespace WebTaskManager.Services
             {
                 return await _context.UserProfile
                     .FirstOrDefaultAsync(u => u.Name == login.Name && u.Key == login.Key);
+                //ищем первого пользователя с входными данными 
             }
             catch (Exception ex)
             {
@@ -38,6 +39,7 @@ namespace WebTaskManager.Services
             {
                 if (await _context.UserProfile.AnyAsync(u => u.Name == registerModel.Name && u.Key == registerModel.Key))
                     return false;
+                //проверяем вдруг такой пользоваетль уже существует 
 
                 var user = new Model.UserProfileModel
                 {
@@ -45,8 +47,9 @@ namespace WebTaskManager.Services
                     Name = registerModel.Name,
                     Key = registerModel.Key
                 };
-
+                //если его нет мы создаём
                 _context.UserProfile.Add(user);
+                // и добовлем в бд 
                 await _context.SaveChangesAsync();
                 return true;
             }

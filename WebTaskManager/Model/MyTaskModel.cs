@@ -16,8 +16,8 @@
         //Нужно для быстрого поиска Status.name не делая дополнительный запрос 
         public required TaskStatusModel TaskStatus { get; set; } 
 
-        public Guid UserId { get; set; }
+        public Guid UserId { get; set; } //Внещний ключ 
 
-        public UserProfileModel User { get; set; }
+        public required UserProfileModel User { get; set; }
     }
 }

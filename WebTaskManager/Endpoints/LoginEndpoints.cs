@@ -17,8 +17,10 @@ namespace WebTaskManager.Endpoints
                 var user = await loginService.AuthenticateAsync(login);
                 if (user == null)
                     return Results.Unauthorized();
+                //если такого пользователя нет возвращаем ошибку 
 
                 var token = jwtService.GenerateToken(user);
+                //если есть то создаем и после возвращаем токен 
                 return Results.Ok(new { token });
             });
 

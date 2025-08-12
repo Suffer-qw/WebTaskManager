@@ -12,13 +12,11 @@ namespace WebTaskManager.Endpoints
     {
         private static Guid GetuserIdClaim(HttpContext httpContext)
         {
-            foreach(var claim in httpContext.User.Claims)
-            {
-                Console.WriteLine($"tyt clam {claim.Value} -- {claim.Type} -- {claim.Subject}");
-            }    
+            //Цель: извлечь из HTTP контекста (текущего запроса) ID пользователя в виде Guid,
+            //который хранится в JWT токене как claim с типом NameIdentifier.
             var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim == null || !Guid.TryParse(userIdClaim, out Guid userId))
-                return Guid.Parse("e09bd247-164c-4278-9e9f-f5fd1247a2c7");
+                return Guid.Parse("00000000-0000-0000-0000-000000000000");
             return Guid.Parse(userIdClaim);
         }
         public static IEndpointRouteBuilder MapMyTaskEndPoint(this IEndpointRouteBuilder app)
@@ -27,7 +25,7 @@ namespace WebTaskManager.Endpoints
             app.MapPost("/myTasksCreate", async (CreateMyTaskRequest CreateMyTask, IMyTaskService myTaskService, HttpContext httpContext) =>
             {
                 var task = await myTaskService.AddMyTaskAsync(CreateMyTask, GetuserIdClaim(httpContext));
-                return Results.Created($"/api/v1/mytask/{task.Id}", task);
+                return Results.Created($"/api/v1/mytask/{task!.Id}", task);
             })
                 .RequireAuthorization();
 
