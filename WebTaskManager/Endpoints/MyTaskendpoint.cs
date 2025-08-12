@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using WebTaskManager.Contracts;
@@ -11,7 +12,11 @@ namespace WebTaskManager.Endpoints
     {
         private static Guid GetuserIdClaim(HttpContext httpContext)
         {
-            var userIdClaim = httpContext.User.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+            foreach(var claim in httpContext.User.Claims)
+            {
+                Console.WriteLine($"tyt clam {claim.Value} -- {claim.Type} -- {claim.Subject}");
+            }    
+            var userIdClaim = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim == null || !Guid.TryParse(userIdClaim, out Guid userId))
                 return Guid.Parse("e09bd247-164c-4278-9e9f-f5fd1247a2c7");
             return Guid.Parse(userIdClaim);
