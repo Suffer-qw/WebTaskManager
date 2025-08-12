@@ -48,6 +48,13 @@ namespace WebTaskManager.AppContext
                 new TaskStatusModel { Id = Guid.NewGuid(), Status = "Завершена" }
                 );
 
+            // Конфигурация отношения: Одна задача принадлежит одному пользователю (UserProfileModel), пользователь может иметь много задач
+            modelBuilder.Entity<MyTaskModel>()
+                .HasOne(t => t.User)  // Навигационное свойство в MyTaskModel
+                .WithMany()  // Пользователь может иметь много задач (без обратного навигационного свойства в UserProfileModel)
+                .HasForeignKey(t => t.UserId)  // Foreign key в MyTaskModel
+                .OnDelete(DeleteBehavior.Cascade);  // При удалении пользователя удаляются его задачи (опционально, можно изменить на Restrict или SetNull)
+
             // Автоматическое применение всех конфигураций
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
 

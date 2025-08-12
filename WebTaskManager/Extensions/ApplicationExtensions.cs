@@ -15,6 +15,9 @@ namespace WebTaskManager.Extensions
             builder1.Services.AddScoped<IMyTaskService, MyTaskServices>();
             builder1.Services.AddScoped<IUserProfileService, UserProfileServices>();
             builder1.Services.AddScoped<ITaskStatusService, TaskStatusServices>();
+            builder1.Services.AddScoped<ILoginService,LoginService>();
+
+            builder1.Services.AddScoped<JwtServices>();
 
 
             builder1.Services.AddProblemDetails();
